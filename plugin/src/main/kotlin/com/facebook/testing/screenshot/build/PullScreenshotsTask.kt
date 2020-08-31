@@ -64,7 +64,7 @@ open class PullScreenshotsTask : ScreenshotTask() {
     }
 
     project.exec {
-      it.executable = "python"
+      it.executable = extension.pythonExecutable
       it.environment("PYTHONPATH", jarFile)
 
       it.args = mutableListOf(
