@@ -69,10 +69,10 @@ afterEvaluate { project ->
       mavenDeployer {
         beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-        repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        repository(url: "https://maven.pkg.github.com/oradkovsky/screenshot-tests-for-android") {
           authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
         }
-        snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+        snapshotRepository(url: "https://maven.pkg.github.com/oradkovsky/screenshot-tests-for-android") {
           authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
         }
 
