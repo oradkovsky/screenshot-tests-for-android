@@ -20,11 +20,20 @@ import com.android.build.gradle.api.TestVariant
 import org.gradle.api.DefaultTask
 
 open class ScreenshotTask : DefaultTask() {
-  protected lateinit var extension: ScreenshotsPluginExtension
-  protected lateinit var variant: TestVariant
+    protected lateinit var extension: ScreenshotsPluginExtension
+    protected lateinit var variant: TestVariant
 
-  open fun init(variant: TestVariant, extension: ScreenshotsPluginExtension) {
-      this.extension = extension
-      this.variant = variant
-  }
+    open fun init(variant: TestVariant, extension: ScreenshotsPluginExtension) {
+        this.extension = ScreenshotsPluginExtension()
+            .apply {
+                recordDir = extension.recordDir
+                addDeps = extension.addDeps
+                multipleDevices = extension.multipleDevices
+                predefinedCiDevice = extension.predefinedCiDevice
+                pythonExecutable = extension.pythonExecutable
+                referenceDir = extension.referenceDir
+                failureDir = extension.failureDir
+            }
+        this.variant = variant
+    }
 }

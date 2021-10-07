@@ -105,15 +105,15 @@ class ScreenshotsPlugin : Plugin<Project> {
 
         createTask(
             project,
-            VerifyScreenshotTestTask.taskName(variant),
+            VerifyFtlScreenshotTestTask.taskName(variant),
             variant,
-            VerifyScreenshotTestTask::class.java)
+            VerifyFtlScreenshotTestTask::class.java)
 
         createTask(
             project,
-            VerifyScreenshotTestTaskAdb.taskName(variant),
+            VerifyAdbScreenshotTestTask.taskName(variant),
             variant,
-            VerifyScreenshotTestTaskAdb::class.java)
+            VerifyAdbScreenshotTestTask::class.java)
       }
     }
   }
