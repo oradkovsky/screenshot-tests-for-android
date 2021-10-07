@@ -38,6 +38,7 @@ from . import common
 from . import metadata
 from .device_name_calculator import DeviceNameCalculator
 from .no_op_device_name_calculator import NoOpDeviceNameCalculator
+from .predefined_device_name_calculator import PredefinedDeviceNameCalculator
 from .simple_puller import SimplePuller
 
 try:
@@ -655,6 +656,15 @@ def setup_paths():
     os.environ["PATH"] = os.environ["PATH"] + ":" + android_home + "/platform-tools/"
 
 
+def guess_calculator(multiple_devices, predefined_ci_device):
+    if multiple_devices:
+        if predefined_ci_device is None:
+            return DeviceNameCalculator()
+        else:
+            return PredefinedDeviceNameCalculator(predefined_ci_device)
+    else:
+        return NoOpDeviceNameCalculator()
+
 def main(argv):
     setup_paths()
     try:
@@ -671,6 +681,7 @@ def main(argv):
                 "temp-dir=",
                 "no-pull",
                 "multiple-devices=",
+                "predefined-ci-device="
             ],
         )
     except getopt.GetoptError:
@@ -692,8 +703,10 @@ def main(argv):
     should_perform_pull = "--no-pull" not in opts
 
     multiple_devices = opts.get("--multiple-devices")
+    predefined_ci_device = opts.get("--predefined-ci-device")
+
     device_calculator = (
-        DeviceNameCalculator() if multiple_devices else NoOpDeviceNameCalculator()
+        guess_calculator(multiple_devices, predefined_ci_device)
     )
 
     base_puller_args = []

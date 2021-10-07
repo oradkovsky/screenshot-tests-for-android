@@ -54,9 +54,10 @@ open class PullScreenshotsTask : ScreenshotTask() {
   fun pullScreenshots() {
     val codeSource = ScreenshotsPlugin::class.java.protectionDomain.codeSource
     val jarFile = File(codeSource.location.toURI().path)
-    val isVerifyOnly = verify && extension.referenceDir != null
+    val isReference = extension.referenceDir != null
+    val isVerifyOnly = verify && isReference
 
-    val outputDir = if (isVerifyOnly) {
+    val outputDir = if (isReference) {
       File(extension.referenceDir)
     } else {
       getReportDir(project, variant)
@@ -94,6 +95,11 @@ open class PullScreenshotsTask : ScreenshotTask() {
         if (extension.multipleDevices) {
           add("--multiple-devices")
           add("${extension.multipleDevices}")
+        }
+
+        if (extension.predefinedCiDevice != null) {
+          add("--predefined-ci-device")
+          add("${extension.predefinedCiDevice}")
         }
 
         if (isVerifyOnly) {
