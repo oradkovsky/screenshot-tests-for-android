@@ -18,19 +18,24 @@ package com.facebook.testing.screenshot.build
 
 import com.android.build.gradle.api.TestVariant
 
+open class RecordAdbScreenshotTestTask : RunScreenshotTestTask() {
+    companion object {
+        fun taskName(variant: TestVariant) = "recordAdb${variant.name.capitalize()}ScreenshotTest"
+    }
 
-open class RecordScreenshotTestTask : RunScreenshotTestTask() {
-  companion object {
-    fun taskName(variant: TestVariant) = "record${variant.name.capitalize()}ScreenshotTest"
-  }
+    init {
+        description = "Installs and runs screenshot tests, then records their output for later verification"
+        group = ScreenshotsPlugin.GROUP
+    }
 
-  init {
-    description = "Installs and runs screenshot tests, then records their output for later verification"
-    group = ScreenshotsPlugin.GROUP
-  }
-
-  override fun init(variant: TestVariant, extension: ScreenshotsPluginExtension) {
-    super.init(variant, extension)
-    record = true
-  }
+    override fun init(variant: TestVariant, extension: ScreenshotsPluginExtension) {
+        super.init(
+            variant,
+            cloneExtension(extension)
+                .apply {
+                    predefinedCiDevice = null
+                }
+        )
+        record = true
+    }
 }

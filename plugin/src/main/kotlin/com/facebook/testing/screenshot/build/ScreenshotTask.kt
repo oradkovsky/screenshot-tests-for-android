@@ -24,7 +24,12 @@ open class ScreenshotTask : DefaultTask() {
     protected lateinit var variant: TestVariant
 
     open fun init(variant: TestVariant, extension: ScreenshotsPluginExtension) {
-        this.extension = ScreenshotsPluginExtension()
+        this.extension = extension
+        this.variant = variant
+    }
+
+    protected fun cloneExtension(extension: ScreenshotsPluginExtension): ScreenshotsPluginExtension {
+        return ScreenshotsPluginExtension()
             .apply {
                 recordDir = extension.recordDir
                 addDeps = extension.addDeps
@@ -34,6 +39,5 @@ open class ScreenshotTask : DefaultTask() {
                 referenceDir = extension.referenceDir
                 failureDir = extension.failureDir
             }
-        this.variant = variant
     }
 }

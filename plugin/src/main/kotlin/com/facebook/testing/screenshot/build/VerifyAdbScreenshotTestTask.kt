@@ -32,8 +32,13 @@ open class VerifyAdbScreenshotTestTask : RunScreenshotTestTask() {
     }
 
     override fun init(variant: TestVariant, extension: ScreenshotsPluginExtension) {
-        extension.predefinedCiDevice = null
-        extension.referenceDir = null
-        super.init(variant, extension)
+        super.init(
+            variant,
+            cloneExtension(extension)
+                .apply {
+                    predefinedCiDevice = null
+                    referenceDir = null
+                }
+        )
     }
 }

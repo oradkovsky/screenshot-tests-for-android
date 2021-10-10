@@ -31,7 +31,7 @@ open class VerifyFtlScreenshotTestTask : RunScreenshotTestTask() {
 
     override fun init(variant: TestVariant, extension: ScreenshotsPluginExtension) {
         super.init(variant, extension)
-        assert(this.extension.referenceDir != null)
-        assert(this.extension.predefinedCiDevice != null)
+        assert(extension.referenceDir != null)
+        assert(extension.predefinedCiDevice != null)
     }
 }

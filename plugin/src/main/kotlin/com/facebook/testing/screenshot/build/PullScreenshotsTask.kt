@@ -63,8 +63,6 @@ open class PullScreenshotsTask : ScreenshotTask() {
       getReportDir(project, variant)
     }
 
-    assert(if (isVerifyOnly) outputDir.exists() else !outputDir.exists())
-
     project.exec {
       it.executable = "python"
       it.environment("PYTHONPATH", jarFile)
@@ -102,7 +100,7 @@ open class PullScreenshotsTask : ScreenshotTask() {
           add("${extension.predefinedCiDevice}")
         }
 
-        if (isVerifyOnly) {
+        if (isVerifyOnly || record && extension.predefinedCiDevice != null) {
           add("--no-pull")
         }
       }
