@@ -21,6 +21,10 @@ def isReleaseBuild() {
   return !VERSION_NAME.contains("SNAPSHOT")
 }
 
+def getRepositoryName() {
+  return rootProject.ext.props.get("repository", "")
+}
+
 def getRepositoryUsername() {
   return rootProject.ext.props.get("repositoryUsername", "")
 }
@@ -69,10 +73,10 @@ afterEvaluate { project ->
       mavenDeployer {
         beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-        repository(url: "https://maven.pkg.github.com/oradkovsky/screenshot-tests-for-android") {
+        repository(url: getRepositoryName()) {
           authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
         }
-        snapshotRepository(url: "https://maven.pkg.github.com/oradkovsky/screenshot-tests-for-android") {
+        snapshotRepository(url: getRepositoryName()) {
           authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
         }
 

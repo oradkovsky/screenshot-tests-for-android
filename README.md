@@ -74,6 +74,15 @@ You can install all the artifacts to your local maven repository using
   $ gradle installArchives
 ```
 
+You can publish all the artifacts to Github packages using
+
+```bash
+  $ gradle uploadArchives
+```
+
+The above assumes proper setup of local.properties file (should contain `repository`, 
+`repositoryUsername` and `repositoryPassword` settings)
+
 ## Running With a Remote Service
 
 For usage with a remote testing service (e.g. Google Cloud Test Lab) where ADB is not available directly the plugin supports a "disconnected" 
