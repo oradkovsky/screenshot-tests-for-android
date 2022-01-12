@@ -22,11 +22,11 @@ def isReleaseBuild() {
 }
 
 def getRepositoryUsername() {
-  return findProperty('repositoryUsername') ? property('repositoryUsername') : ""
+  return rootProject.ext.props.get("repositoryUsername", "")
 }
 
 def getRepositoryPassword() {
-  return findProperty('repositoryPassword') ? property('repositoryPassword') : ""
+  return rootProject.ext.props.get("repositoryPassword", "")
 }
 
 def configurePom(pom) {
