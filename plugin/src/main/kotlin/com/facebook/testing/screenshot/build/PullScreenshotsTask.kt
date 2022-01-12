@@ -54,18 +54,17 @@ open class PullScreenshotsTask : ScreenshotTask() {
   fun pullScreenshots() {
     val codeSource = ScreenshotsPlugin::class.java.protectionDomain.codeSource
     val jarFile = File(codeSource.location.toURI().path)
-    val isVerifyOnly = verify && extension.referenceDir != null
+    val isReference = extension.referenceDir != null
+    val isVerifyOnly = verify && isReference
 
-    val outputDir = if (isVerifyOnly) {
+    val outputDir = if (isReference) {
       File(extension.referenceDir)
     } else {
       getReportDir(project, variant)
     }
 
-    assert(if (isVerifyOnly) outputDir.exists() else !outputDir.exists())
-
     project.exec {
-      it.executable = "python"
+      it.executable = extension.pythonExecutable
       it.environment("PYTHONPATH", jarFile)
 
       it.args = mutableListOf(
@@ -96,7 +95,12 @@ open class PullScreenshotsTask : ScreenshotTask() {
           add("${extension.multipleDevices}")
         }
 
-        if (isVerifyOnly) {
+        if (extension.predefinedCiDevice != null) {
+          add("--predefined-ci-device")
+          add("${extension.predefinedCiDevice}")
+        }
+
+        if (isVerifyOnly || record && extension.predefinedCiDevice != null) {
           add("--no-pull")
         }
       }

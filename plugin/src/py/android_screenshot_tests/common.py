@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # Copyright (c) Facebook, Inc. and its affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,7 +39,7 @@ def get_adb():
 
 # a version of subprocess.check_output that returns a utf-8 string
 def check_output(args, **kwargs):
-    return subprocess.check_output(args, **kwargs).decode('utf-8')
+    return subprocess.check_output(args, **kwargs).decode()
 
 # a compat version for py3, since assertRegexpMatches is deprecated
 def assertRegex(testcase, regex, string):

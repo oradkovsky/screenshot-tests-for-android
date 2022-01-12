@@ -21,12 +21,16 @@ def isReleaseBuild() {
   return !VERSION_NAME.contains("SNAPSHOT")
 }
 
+def getRepositoryName() {
+  return rootProject.ext.props.get("repository", "")
+}
+
 def getRepositoryUsername() {
-  return findProperty('repositoryUsername') ? property('repositoryUsername') : ""
+  return rootProject.ext.props.get("repositoryUsername", "")
 }
 
 def getRepositoryPassword() {
-  return findProperty('repositoryPassword') ? property('repositoryPassword') : ""
+  return rootProject.ext.props.get("repositoryPassword", "")
 }
 
 def configurePom(pom) {
@@ -69,10 +73,10 @@ afterEvaluate { project ->
       mavenDeployer {
         beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-        repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        repository(url: getRepositoryName()) {
           authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
         }
-        snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+        snapshotRepository(url: getRepositoryName()) {
           authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
         }
 

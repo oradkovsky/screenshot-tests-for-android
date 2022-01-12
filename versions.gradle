@@ -62,4 +62,13 @@ ext {
       mockito             : "org.mockito:mockito-core:1.10.19",
       hamcrest            : "org.hamcrest:hamcrest-core:1.3",
   ]
+
+  props = new Properties()
+
+  try {
+    props.load(project.rootProject.file('local.properties').newDataInputStream())
+  } catch (FileNotFoundException exception) {
+    println("You are missing local.properties file needed for project configuration")
+    exception.printStackTrace()
+  }
 }

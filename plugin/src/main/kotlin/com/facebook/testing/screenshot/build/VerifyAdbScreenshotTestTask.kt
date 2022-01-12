@@ -18,24 +18,27 @@ package com.facebook.testing.screenshot.build
 
 import com.android.build.gradle.api.TestVariant
 
-open class RunScreenshotTestTask : PullScreenshotsTask() {
+open class VerifyAdbScreenshotTestTask : RunScreenshotTestTask() {
     companion object {
-        fun taskName(variant: TestVariant) = "run${variant.name.capitalize()}ScreenshotTest"
+        fun taskName(variant: TestVariant) = "verifyAdb${variant.name.capitalize()}ScreenshotTest"
     }
 
     init {
-        description = "Installs and runs screenshot tests, then generates a report"
+        description = "Installs and runs screenshot tests locally, " +
+            "then verifies their output against previously recorded screenshots. " +
+            "Ignores referenceDir and predefinedCiDevice parameters."
         group = ScreenshotsPlugin.GROUP
+        verify = true
     }
 
     override fun init(variant: TestVariant, extension: ScreenshotsPluginExtension) {
-        super.init(variant, extension)
-
-        if (verify && extension.referenceDir != null) {
-            return
-        }
-
-        dependsOn(variant.connectedInstrumentTestProvider)
-        mustRunAfter(variant.connectedInstrumentTestProvider)
+        super.init(
+            variant,
+            cloneExtension(extension)
+                .apply {
+                    predefinedCiDevice = null
+                    referenceDir = null
+                }
+        )
     }
 }

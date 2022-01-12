@@ -18,14 +18,20 @@ package com.facebook.testing.screenshot.build
 
 import com.android.build.gradle.api.TestVariant
 
-open class VerifyScreenshotTestTask : RunScreenshotTestTask() {
-  companion object {
-    fun taskName(variant: TestVariant) = "verify${variant.name.capitalize()}ScreenshotTest"
-  }
+open class VerifyFtlScreenshotTestTask : RunScreenshotTestTask() {
+    companion object {
+        fun taskName(variant: TestVariant) = "verifyFtl${variant.name.capitalize()}ScreenshotTest"
+    }
 
-  init {
-    description = "Installs and runs screenshot tests, then verifies their output against previously recorded screenshots"
-    group = ScreenshotsPlugin.GROUP
-    verify = true
-  }
+    init {
+        description = "Verifies referenceDir against previously recorded screenshots"
+        group = ScreenshotsPlugin.GROUP
+        verify = true
+    }
+
+    override fun init(variant: TestVariant, extension: ScreenshotsPluginExtension) {
+        super.init(variant, extension)
+        assert(extension.referenceDir != null)
+        assert(extension.predefinedCiDevice != null)
+    }
 }

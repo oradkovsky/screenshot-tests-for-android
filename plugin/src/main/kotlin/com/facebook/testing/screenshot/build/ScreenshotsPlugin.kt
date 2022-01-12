@@ -31,6 +31,8 @@ open class ScreenshotsPluginExtension {
   var addDeps = true
   /** Whether to store screenshots in device specific folders */
   var multipleDevices = false
+  /** Predefined CI device */
+  var predefinedCiDevice: String? = null
   /** The python executable to use */
   var pythonExecutable = "python"
   /** The directory to compare screenshots from in verify only mode */
@@ -97,15 +99,27 @@ class ScreenshotsPlugin : Plugin<Project> {
 
         createTask(
             project,
-            RecordScreenshotTestTask.taskName(variant),
+            RecordAdbScreenshotTestTask.taskName(variant),
             variant,
-            RecordScreenshotTestTask::class.java)
+            RecordAdbScreenshotTestTask::class.java)
 
         createTask(
             project,
-            VerifyScreenshotTestTask.taskName(variant),
+            RecordFtlScreenshotTestTask.taskName(variant),
             variant,
-            VerifyScreenshotTestTask::class.java)
+            RecordFtlScreenshotTestTask::class.java)
+
+        createTask(
+            project,
+            VerifyFtlScreenshotTestTask.taskName(variant),
+            variant,
+            VerifyFtlScreenshotTestTask::class.java)
+
+        createTask(
+            project,
+            VerifyAdbScreenshotTestTask.taskName(variant),
+            variant,
+            VerifyAdbScreenshotTestTask::class.java)
       }
     }
   }
